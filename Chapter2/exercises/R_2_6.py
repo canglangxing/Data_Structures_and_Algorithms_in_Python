@@ -48,3 +48,11 @@ class CreditCard:
             else:
                 self._balance -= amount
                 return True
+
+
+if __name__ == '__main__':
+    card = CreditCard('Andy', 'standard bank', '7421 2350 1681 8949', 1000)
+    card.make_payment(100)
+    print(card.get_balance())
+    card.make_payment(-200)
+    print(card.get_balance())
