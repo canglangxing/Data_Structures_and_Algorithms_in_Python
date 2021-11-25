@@ -37,3 +37,12 @@ class ArithmeticProgression(Progression):
             answer = next(self)
         self._current = current
         return answer
+
+
+if __name__ == '__main__':
+    a = ArithmeticProgression(128, 0)
+    i = 0
+    while a[i] < 2**16:
+        i += 1
+    else:
+        print(i)
