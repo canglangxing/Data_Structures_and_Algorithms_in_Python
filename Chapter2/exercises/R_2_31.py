@@ -21,28 +21,15 @@ class Progression:
         print(' '.join(str(next(self)) for _ in range(n)))
 
 
-class ArithmeticProgression(Progression):
+class AbsoluteDiffProgression(Progression):
 
-    def __init__(self, increment=1, start=0):
-        super().__init__(start)
-        self._increment = increment
+    def __init__(self, first=2, second=200):
+        super().__init__(first)
+        self._prev = first + second
 
     def _advance(self):
-        self._current += self._increment
-
-    def __getitem__(self, item):
-        answer = self._current
-        current = self._current
-        for j in range(item):
-            answer = next(self)
-        self._current = current
-        return answer
+        self._prev, self._current = self._current, abs(self._prev - self._current)
 
 
 if __name__ == '__main__':
-    a = ArithmeticProgression(128, 0)
-    i = 0
-    while a[i] < 2**20:
-        i += 1
-    else:
-        print(i)
+    AbsoluteDiffProgression().print_progression(10)

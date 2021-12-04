@@ -34,33 +34,26 @@ class CreditCard:
     def make_payment(self, amount):
         self._balance -= amount
 
+    def _set_balance(self, value):
+        self._balance = value
+
 
 class PredatoryCreditCard(CreditCard):
 
-    __slots__ = '_apr', '_min_payment'
+    __slots__ = '_apr'
     OverLimit_Fee = 5
-    Min_PCT = 0.2
-    OverTime_Fee = 10
 
     def __init__(self, customer, bank, account, limit, apr):
         super().__init__(customer, bank, account, limit)
         self._apr = apr
-        self._min_payment = 0
 
     def charge(self, price):
         success = super().charge(price)
         if not success:
-            self._balance += PredatoryCreditCard.OverLimit_Fee
+            super()._set_balance(super().get_balance() + PredatoryCreditCard.OverLimit_Fee)
         return success
 
     def process_month(self):
-        if self._min_payment > 0:
-            self._balance += PredatoryCreditCard.OverTime_Fee
-        if self._balance > 0:
+        if super().get_balance() > 0:
             monthly_factor = pow(1 + self._apr, 1 / 12)
-            self._balance *= monthly_factor
-            self._min_payment = self._balance * PredatoryCreditCard.Min_PCT
-
-    def make_payment(self, amount):
-        super().make_payment(amount)
-        self._min_payment = max(0, self._min_payment - amount)
+            super()._set_balance(super().get_balance() * monthly_factor)
